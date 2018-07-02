@@ -1,0 +1,16 @@
+﻿@inject UserAccount UserAccount;
+
+<div>
+    Hello @(UserAccount.LoggedIn ? "" : "Guest!")
+</div>
+
+@functions {
+
+    private string UserName;
+
+    protected override Task OnInitAsync()
+    {
+        return base.OnInitAsync();
+    }
+
+}

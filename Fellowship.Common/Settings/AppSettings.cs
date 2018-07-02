@@ -15,6 +15,7 @@ namespace Fellowship.Common.Settings
         }
 
         public ServerOnlySettings ServerOnly { get; set; }
+        public WebSettings Web { get; set; }
 
         public class ServerOnlySettings
         {
@@ -34,6 +35,17 @@ namespace Fellowship.Common.Settings
                 public string Audience { get; set; }
                 public string Issuer { get; set; }
                 public int? LifeTimeSecond { get; set; }
+            }
+        }
+
+        public class WebSettings
+        {
+
+            public FacebookSettings Facebook { get; set; }
+
+            public class FacebookSettings
+            {
+                public string RedirectUri { get; set; }
             }
         }
     }
