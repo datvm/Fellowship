@@ -9,7 +9,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="JwtSharp.AspNetCore" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fellowship.Common\Fellowship.Common.csproj" />
   </ItemGroup>
 
 </Project>
