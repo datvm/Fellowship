@@ -1,16 +1,37 @@
-﻿@inject UserAccount UserAccount;
+﻿@using Microsoft.AspNetCore.Blazor.Browser.Interop;
 
-<div>
-    Hello @(UserAccount.LoggedIn ? "" : "Guest!")
+@inject LocalSettings LocalSettings;
+@inject UserAccount UserAccount;
+
+<div class="@(this.UserAccount.LoggedIn ? "" : "d-none")">
+    <div class="buttons">
+        <a class="option text-only">
+            Welcome! To begin, please log in:
+        </a>
+
+        <a class="option" onclick="@(LogInWithFacebook)">
+            Log In with
+            <i class="fab fa-facebook-square"></i>
+            Facebook
+        </a>
+    </div>
+</div>
+
+<div class="@(this.UserAccount.LoggedIn ? "d-none" : "")">
+    Hello!
 </div>
 
 @functions {
 
-    private string UserName;
+protected override async Task OnInitAsync()
+{
+    await this.LocalSettings.Initialize();
+}
 
-    protected override Task OnInitAsync()
-    {
-        return base.OnInitAsync();
-    }
+public async void LogInWithFacebook()
+{
+    var url = await this.UserAccount.GetFacebookLogInUrl();
+    RegisteredFunction.Invoke<string>("NavigateTo", url);
+}
 
 }

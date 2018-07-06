@@ -13,12 +13,17 @@ namespace Fellowship.Server.Models.Auth
     public class ExternalLoginProvider
     {
 
-        private AppSettings Settings { get; set; }
+        private AppSettings settings;
         private RestClient RestClient { get; set; } = new RestClient("https://www.example.com/");
+
+        public ExternalLoginProvider(AppSettings settings)
+        {
+            this.settings = settings;
+        }
 
         public Uri GetFacebookLoginUrl(string state, string redirectUrl)
         {
-            var oauthSettings = this.Settings.ServerOnly.Facebook;
+            var oauthSettings = this.settings.ServerOnly.Facebook;
 
             var request = new RestRequest("https://www.facebook.com/v3.0/dialog/oauth")
                 .AddQueryParameter("client_id", oauthSettings.AppId)
@@ -31,7 +36,7 @@ namespace Fellowship.Server.Models.Auth
 
         public async Task<FacebookProfile> GetFacebookId(string code, string redirectUrl)
         {
-            var oauthSettings = this.Settings.ServerOnly.Facebook;
+            var oauthSettings = this.settings.ServerOnly.Facebook;
 
             var tokenRequest = new RestRequest("https://graph.facebook.com/v3.0/oauth/access_token", Method.GET)
                 .AddQueryParameter("client_id", oauthSettings.AppId)

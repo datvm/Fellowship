@@ -20,11 +20,29 @@
   .app-page .app-sidebar {
     width: 300px;
     flex-shrink: 0;
-    background: rgba(29, 113, 182, 0.7);
     color: white;
+    background: rgba(29, 113, 182, 0.7);
     padding: 0;
-    border-right: 1px solid #E6E6E6;
-    padding: 15px; }
+    border-right: 1px solid #E6E6E6; }
+    .app-page .app-sidebar .buttons {
+      display: flex;
+      flex-direction: column;
+      height: 100%; }
+      .app-page .app-sidebar .buttons > a {
+        display: block;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0);
+        cursor: pointer;
+        transition: all ease-out 0.25s; }
+        .app-page .app-sidebar .buttons > a:hover:not(.my-auto):not(.text-only) {
+          background: rgba(255, 255, 255, 0.5); }
+        .app-page .app-sidebar .buttons > a.text-only {
+          cursor: default; }
+      .app-page .app-sidebar .buttons > hr {
+        margin: 5px 0;
+        border-top-color: white; }
+      .app-page .app-sidebar .buttons .fa {
+        margin-right: 10px; }
   .app-page .app-main {
     flex-grow: 1; }
 

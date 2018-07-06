@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Fellowship.Common.Settings;
+using Fellowship.Server.Models.Auth;
 using Fellowship.Server.Models.Entities;
 using JwtSharp.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -19,7 +20,7 @@ namespace Fellowship.Server
 {
     public class Startup
     {
-        
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -27,6 +28,8 @@ namespace Fellowship.Server
 
             var settings = AppSettings.Load();
             services.AddSingleton(settings);
+
+            services.AddSingleton<ExternalLoginProvider>();
 
             var connectionString = settings.ServerOnly.DatabaseConnectionString;
             services.AddDbContext<FellowshipContext>(options =>
@@ -43,6 +46,17 @@ namespace Fellowship.Server
                 options.SecurityKey = jwtSettings.SecurityKey;
                 options.ExpireSeconds = jwtSettings.LifeTimeSecond;
             });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin", builder =>
+                {
+                    builder
+                        .WithOrigins(settings.ServerOnly.Cors)
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,8 +71,9 @@ namespace Fellowship.Server
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            app.UseCors("AllowSpecificOrigin");
 
+            app.UseHttpsRedirection();
             app.UseAuthentication();
 
             app.UseMvc();

@@ -16,12 +16,13 @@ namespace Fellowship.Common.Settings
 
         public ServerOnlySettings ServerOnly { get; set; }
         public WebSettings Web { get; set; }
-
+        
         public class ServerOnlySettings
         {
             public FacebookSettings Facebook { get; set; }
             public string DatabaseConnectionString { get; set; }
             public JwtSettings Jwt { get; set; }
+            public string[] Cors { get; set; }
 
             public class FacebookSettings
             {
@@ -42,6 +43,7 @@ namespace Fellowship.Common.Settings
         {
 
             public FacebookSettings Facebook { get; set; }
+            public string ApiServer { get; set; }
 
             public class FacebookSettings
             {
