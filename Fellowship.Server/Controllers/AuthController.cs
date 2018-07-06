@@ -33,9 +33,32 @@ namespace Fellowship.Server.Controllers
         }
 
         [HttpGet, Route("token")]
-        public void Token(string code, string service)
+        public async Task<IActionResult> Token(string code, string service, string redirectUrl)
         {
-            
+            Account account = null;
+
+            switch (service.ToLower())
+            {
+                case "facebook":
+                    var profile = await this.externalLoginProvider.GetFacebookIdAsync(code, redirectUrl);
+                    
+                    if (profile != null)
+                    {
+                        account = this.fellowshipContext.Account
+                            .FirstOrDefault(q => q.FacebookId == profile.Id);
+                    }
+
+                    break;
+                default:
+                    return this.BadRequest("Unknown service");
+            }
+
+            if (account == null)
+            {
+                return this.BadRequest("Invalid token");
+            }
+
+            return null;
         }
 
     }

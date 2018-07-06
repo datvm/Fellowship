@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
+using ServiceSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 namespace Fellowship.Server.Models.Auth
 {
 
-    public class ExternalLoginProvider
+    public class ExternalLoginProvider : IService
     {
 
         private AppSettings settings;
@@ -34,7 +35,7 @@ namespace Fellowship.Server.Models.Auth
             return this.RestClient.BuildUri(request);
         }
 
-        public async Task<FacebookProfile> GetFacebookId(string code, string redirectUrl)
+        public async Task<FacebookProfile> GetFacebookIdAsync(string code, string redirectUrl)
         {
             var oauthSettings = this.settings.ServerOnly.Facebook;
 

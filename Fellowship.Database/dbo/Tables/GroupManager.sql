@@ -6,8 +6,13 @@
     [CreatedTime]       BIT NOT NULL,
     [CanAddOtherMember] BIT NOT NULL,
     [Deleted]           BIT NOT NULL,
-    CONSTRAINT [PK_GroupManager] PRIMARY KEY CLUSTERED ([Id] ASC)
+    CONSTRAINT [PK_GroupManager] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_GroupManager_Account] FOREIGN KEY ([SetByAccountId]) REFERENCES [dbo].[Account] ([Id]),
+    CONSTRAINT [FK_GroupManager_Group] FOREIGN KEY ([GroupId]) REFERENCES [dbo].[Group] ([Id]),
+    CONSTRAINT [FK_GroupManager_GroupMember] FOREIGN KEY ([GroupMemberId]) REFERENCES [dbo].[GroupMember] ([Id])
 );
+
+
 
 
 GO

@@ -7,6 +7,7 @@ namespace Fellowship.Server.Models.Entities
     {
         public GroupMember()
         {
+            GroupManager = new HashSet<GroupManager>();
             GroupMemberActivity = new HashSet<GroupMemberActivity>();
         }
 
@@ -20,6 +21,7 @@ namespace Fellowship.Server.Models.Entities
 
         public Account Account { get; set; }
         public Group Group { get; set; }
+        public ICollection<GroupManager> GroupManager { get; set; }
         public ICollection<GroupMemberActivity> GroupMemberActivity { get; set; }
     }
 }

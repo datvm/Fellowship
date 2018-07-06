@@ -69,5 +69,6 @@
     <Build Include="dbo\Tables\GroupMember.sql" />
     <Build Include="dbo\Tables\GroupManager.sql" />
     <Build Include="dbo\Tables\Group.sql" />
+    <Build Include="dbo\Tables\AccountSpecialClaim.sql" />
   </ItemGroup>
 </Project>

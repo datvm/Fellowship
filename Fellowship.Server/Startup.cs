@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using ServiceSharp.AspNetCore;
 
 namespace Fellowship.Server
 {
@@ -29,7 +30,7 @@ namespace Fellowship.Server
             var settings = AppSettings.Load();
             services.AddSingleton(settings);
 
-            services.AddSingleton<ExternalLoginProvider>();
+            services.AddServices();
 
             var connectionString = settings.ServerOnly.DatabaseConnectionString;
             services.AddDbContext<FellowshipContext>(options =>

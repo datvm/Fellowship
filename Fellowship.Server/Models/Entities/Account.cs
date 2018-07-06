@@ -7,7 +7,9 @@ namespace Fellowship.Server.Models.Entities
     {
         public Account()
         {
+            AccountSpecialClaim = new HashSet<AccountSpecialClaim>();
             Group = new HashSet<Group>();
+            GroupManager = new HashSet<GroupManager>();
             GroupMember = new HashSet<GroupMember>();
         }
 
@@ -18,7 +20,9 @@ namespace Fellowship.Server.Models.Entities
         public string FacebookProfile { get; set; }
         public string Name { get; set; }
 
+        public ICollection<AccountSpecialClaim> AccountSpecialClaim { get; set; }
         public ICollection<Group> Group { get; set; }
+        public ICollection<GroupManager> GroupManager { get; set; }
         public ICollection<GroupMember> GroupMember { get; set; }
     }
 }
