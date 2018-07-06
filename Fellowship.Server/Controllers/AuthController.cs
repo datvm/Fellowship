@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Fellowship.Common.Settings;
 using Fellowship.Server.Models.Auth;
 using Fellowship.Server.Models.Entities;
+using Fellowship.Server.Models.Services;
+using JwtSharp;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Fellowship.Server.Controllers
 {
@@ -15,13 +21,21 @@ namespace Fellowship.Server.Controllers
     public class AuthController : ControllerBase
     {
 
-        private FellowshipContext fellowshipContext;
-        private ExternalLoginProvider externalLoginProvider;
+        IAccountSerivce accountService;
+        ExternalLoginProvider externalLoginProvider;
+        JwtIssuer jwtIssuer;
+        AppSettings appSettings;
 
-        public AuthController(ExternalLoginProvider externalLoginProvider, FellowshipContext fellowshipContext)
+        public AuthController(
+            ExternalLoginProvider externalLoginProvider,
+            IAccountSerivce accountService,
+            JwtIssuer jwtIssuer,
+            AppSettings appSettings)
         {
             this.externalLoginProvider = externalLoginProvider;
-            this.fellowshipContext = fellowshipContext;
+            this.accountService = accountService;
+            this.jwtIssuer = jwtIssuer;
+            this.appSettings = appSettings;
         }
 
         [HttpGet, Route("request")]
@@ -40,12 +54,17 @@ namespace Fellowship.Server.Controllers
             switch (service.ToLower())
             {
                 case "facebook":
+#if DEBUG
+                    var profile = JsonConvert.DeserializeObject<FacebookProfile>(
+                         appSettings.ServerOnly.DebugFacebookProfile);
+#else
                     var profile = await this.externalLoginProvider.GetFacebookIdAsync(code, redirectUrl);
-                    
+#endif
+
+
                     if (profile != null)
                     {
-                        account = this.fellowshipContext.Account
-                            .FirstOrDefault(q => q.FacebookId == profile.Id);
+                        account = await this.accountService.GetOrCreateFromFacebookAsync(profile);
                     }
 
                     break;
@@ -58,7 +77,14 @@ namespace Fellowship.Server.Controllers
                 return this.BadRequest("Invalid token");
             }
 
-            return null;
+            var claims = await this.accountService.GetSecurityClaimsAsync(account.Id);
+
+            var token = this.jwtIssuer.IssueToken(claims);
+
+            return this.Ok(new
+            {
+                Token = token,
+            });
         }
 
     }

@@ -62,9 +62,9 @@ namespace Fellowship.Server.Models.Auth
 
             var result = new FacebookProfile()
             {
-                Id = userInfo["id"].Value<string>(),
-                Email = userInfo["email"].Value<string>(),
-                DisplayName = userInfo["name"].Value<string>(),
+                Id = userInfo["id"]?.Value<string>(),
+                Email = userInfo["email"]?.Value<string>(),
+                DisplayName = userInfo["name"]?.Value<string>(),
                 Service = "Facebook",
             };
 

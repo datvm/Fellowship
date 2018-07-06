@@ -25,6 +25,7 @@ namespace Fellowship.Common.Settings
             public string DatabaseConnectionString { get; set; }
             public JwtSettings Jwt { get; set; }
             public string[] Cors { get; set; }
+            public string DebugFacebookProfile { get; set; }
 
             public class FacebookSettings
             {
